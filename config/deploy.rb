@@ -3,50 +3,47 @@
   # Modified from Dan Benjamins version - https://github.com/dan/hivelogic-ee-deploy
 #####################################################################################
 
-if !ENV['env'].nil? then
-  set(:env, ENV['env'])
-else
-  set(:env, 'staging')
-end
+set :application, "app.crowdnoize.com"
+set :deploy_to, "/var/www/#{application}"
+set :user, "deploy"
+set :runner, "deploy"
+set :use_sudo, false
+default_run_options[:pty] = true
+set :scm_passphrase, "RwEzpGFTx47Hyw"  # The deploy user's password
 
-set :application, ""
-set :deploy_to, ""
-
-set :user, "root"
-
-role :app, ""
-role :web, ""
-role :db,  "", :primary => true
-
-set :repository, ""
-set :branch, "master"
+# Roles
+role :app, "66.228.50.87"
+role :web, "66.228.50.87"
+role :db,  "66.228.50.87", :primary => true
 
 # Additional SCM settings
-
-default_run_options[:pty] = true  # Must be set for the password prompt from git to work
 set :scm, :git
 set :ssh_options, { :forward_agent => true }
 set :deploy_via, :remote_cache
-# set :copy_strategy, :checkout
+set :copy_strategy, :checkout
 set :keep_releases, 3
-set :use_sudo, false
 set :copy_compression, :bz2
 
+set :repository, "git@github.com:bryantAXS/crowdnoize-mobile.git"
+set :branch, "master"
+
 # Deployment process
-# before "deploy:update", "deploy:set_permissions"
-after "deploy:update", "deploy:cleanup"
+# after "deploy:update", "deploy:cleanup"
 
 # Custom deployment tasks
 namespace :deploy do
 
-  desc "This is here to overide the original :restart"
-  task :restart, :roles => :app do
-    # do nothing but overide the default
-  end
+  # #{deploy_to}
+  # #{shared_dir}
+  # #{current_release}
 
   task :finalize_update, :roles => :app do
+
+
+    run "mkdir #{latest_release}/vendor"
+    run "cd #{latest_release} && composer install"
     run "chmod -R g+w #{latest_release}" if fetch(:group_writable, true)
-    # overide the rest of the default method
+
   end
 
 end
