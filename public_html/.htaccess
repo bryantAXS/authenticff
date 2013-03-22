@@ -1,0 +1,23 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [QSA,L]
+
+SetEnvIf Host app.crowdnoize.com passreq
+AuthType Basic
+AuthName "crowd"
+AuthUserFile /var/www/.htpasswd
+Require valid-user
+Order allow,deny
+Allow from all
+Deny from env=passreq
+Satisfy any
+
+SetEnvIf Host 66.228.50.87 passreq
+AuthType Basic
+AuthName "crowd"
+AuthUserFile /var/www/.htpasswd
+Require valid-user
+Order allow,deny
+Allow from all
+Deny from env=passreq
+Satisfy any

@@ -1,0 +1,44 @@
+@import "compass/reset";
+@import "compass/css3";
+
+@mixin respond-to($media){
+ // Phone
+ @if $media == phone{
+      @media (max-width: 480px) { @content }
+  }
+ // Tablet Portrait
+ @if $media == tablet-portrait{
+      @media (max-width: 767px) { @content }
+  }
+ // Tablet Landscape - Desktop
+ @if $media == tablet-landscape-desktop{
+      @media (min-width: 768px) and (max-width: 979px) { @content }
+  }
+ // Large Desktop
+ @if $media == large-desktop{
+      @media (min-width: 1200px) { @content }
+  }
+ // Non-Retina
+ @if $media == non-retina{
+      @media screen and (-webkit-max-device-pixel-ratio: 1) { @content }
+  }
+ // Retina Only
+ @if $media == retina{
+      @media screen and (-webkit-min-device-pixel-ratio: 2) { @content }
+  }
+}
+
+[class*="column"] + [class*="column"]:last-child {
+  float: left;
+}
+
+.clearfix, .row{
+  &:after{ content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+  .clearfix{ display: inline-block; }
+  * html .clearfix{ height: 1%; } /* Hides from IE-mac \*/
+  .clearfix{ display: block; }
+}
+
+.clear{
+  clear:both;
+}
