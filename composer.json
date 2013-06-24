@@ -1,8 +1,9 @@
 {
-    "name": "crowdnoize-mobile",
+    "name": "authff",
     "require": {
         "slim/slim": "2.*",
         "slim/extras": "2.*",
-        "twig/twig": "1.*"
+        "twig/twig": "1.*",
+        "stripe/stripe-php": "dev-master"
     }
 }

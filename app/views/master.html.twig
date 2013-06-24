@@ -27,6 +27,11 @@
   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
   -->
 
+  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+  <script type="text/javascript">
+    Stripe.setPublishableKey('pk_d1AhG5h3D8fYlpA55zIvo5XmCyVXr');
+  </script>
+
   <!-- + IE Fix for HTML5 Tags + -->
   <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
@@ -48,6 +53,10 @@
 <body>
 
 {% include 'index.html.twig' %}
+
+{% if invoice %}
+{% include 'invoice.html.twig' %}
+{% endif %}
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="/assets/js/libs/jquery-1.8.2.js"><\/script>')</script>

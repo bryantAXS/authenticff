@@ -12,24 +12,24 @@ class Twig_Tests_LexerTest extends PHPUnit_Framework_TestCase
 {
     public function testNameLabelForTag()
     {
-        $template = '{% ☃ %}';
+        $template = '{% § %}';
 
         $lexer = new Twig_Lexer(new Twig_Environment());
         $stream = $lexer->tokenize($template);
 
         $stream->expect(Twig_Token::BLOCK_START_TYPE);
-        $this->assertSame('☃', $stream->expect(Twig_Token::NAME_TYPE)->getValue());
+        $this->assertSame('§', $stream->expect(Twig_Token::NAME_TYPE)->getValue());
     }
 
     public function testNameLabelForFunction()
     {
-        $template = '{{ ☃() }}';
+        $template = '{{ §() }}';
 
         $lexer = new Twig_Lexer(new Twig_Environment());
         $stream = $lexer->tokenize($template);
 
         $stream->expect(Twig_Token::VAR_START_TYPE);
-        $this->assertSame('☃', $stream->expect(Twig_Token::NAME_TYPE)->getValue());
+        $this->assertSame('§', $stream->expect(Twig_Token::NAME_TYPE)->getValue());
     }
 
     public function testBracketsNesting()
@@ -259,5 +259,43 @@ class Twig_Tests_LexerTest extends PHPUnit_Framework_TestCase
         $stream->expect(Twig_Token::VAR_START_TYPE);
         $stream->expect(Twig_Token::NUMBER_TYPE, 1);
         $stream->expect(Twig_Token::OPERATOR_TYPE, 'and');
+    }
+
+    /**
+     * @expectedException Twig_Error_Syntax
+     * @expectedExceptionMessage Unclosed "variable" at line 3
+     */
+    public function testUnterminatedVariable()
+    {
+        $template = '
+
+{{
+
+bar
+
+
+';
+
+        $lexer = new Twig_Lexer(new Twig_Environment());
+        $stream = $lexer->tokenize($template);
+    }
+
+    /**
+     * @expectedException Twig_Error_Syntax
+     * @expectedExceptionMessage Unclosed "block" at line 3
+     */
+    public function testUnterminatedBlock()
+    {
+        $template = '
+
+{%
+
+bar
+
+
+';
+
+        $lexer = new Twig_Lexer(new Twig_Environment());
+        $stream = $lexer->tokenize($template);
     }
 }
